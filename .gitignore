@@ -1,4 +1,4 @@
 *.exe
 meilisearch-enterprise-windows-amd64.exe
 node_modules/
-data.ms/
+data.ms/git add .

@@ -15,4 +15,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  // Tambahkan blok server di bawah ini
+  server: {
+    port: 5173,
+    strictPort: true, // Memaksa Vite menggunakan 5173 dan akan error jika port sedang dipakai
+  }
 })
