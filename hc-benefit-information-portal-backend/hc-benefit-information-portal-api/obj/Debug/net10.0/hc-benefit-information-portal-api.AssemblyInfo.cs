@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("hc-benefit-information-portal-api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d46788da0ce665825a020a6a02444ed98d06656d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+661714314a2f28b1c377512807593412b759b5f7")]
 [assembly: System.Reflection.AssemblyProductAttribute("hc-benefit-information-portal-api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("hc-benefit-information-portal-api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
