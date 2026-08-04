@@ -39,7 +39,7 @@ const selectedItemClean = computed(() => {
    🔹 NAVIGATION + CATEGORY
 ========================= */
 const navigation = [
-  { name: 'Event', label: 'Event', categoryId: 1 },
+  { name: 'Penghargaan', label: 'Penghargaan', categoryId: 1 },
   { name: 'Bantuan', label: 'Bantuan', categoryId: 2 },
   { name: 'Tunjangan', label: 'Tunjangan', categoryId: 3 },
   { name: 'BenefitLainnya', label: 'Benefit Lainnya', categoryId: 4 }
@@ -131,7 +131,7 @@ if (!search.value) return tunjanganList.value
 ========================= */
 const getCategoryName = (id) => {
   const map = {
-    1: 'Event',
+    1: 'Penghargaan',
     2: 'Bantuan',
     3: 'Tunjangan',
     4: 'Benefit Lainnya'

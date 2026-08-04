@@ -39,7 +39,7 @@ const selectedItemClean = computed(() => {
    🔹 NAVIGATION
 ========================= */
 const navigation = [
-  { name: 'Event', label: 'Event', categoryId: 1 },
+  { name: 'Penghargaan', label: 'Penghargaan', categoryId: 1 },
   { name: 'Bantuan', label: 'Bantuan', categoryId: 2 },
   { name: 'Tunjangan', label: 'Tunjangan', categoryId: 3 },
   { name: 'BenefitLainnya', label: 'Benefit Lainnya', categoryId: 4 }
@@ -129,7 +129,7 @@ const filteredEvent = computed(() => {
 ========================= */
 const getCategoryName = (id) => {
   const map = {
-    1: 'Event',
+    1: 'Penghargaan',
     2: 'Bantuan',
     3: 'Tunjangan',
     4: 'Benefit Lainnya'
@@ -152,7 +152,7 @@ const selectItem = (item) => {
     <div class="mb-4">
       <SearchBar 
         v-model="search" 
-        placeholder="Cari event..." 
+        placeholder="Cari penghargaan..."
       />
     </div>
 
@@ -210,7 +210,7 @@ const selectItem = (item) => {
 
         <!-- 🔹 EMPTY -->
         <div v-if="filteredEvent.length === 0" class="text-center py-5 bg-white rounded shadow-sm border">
-          <p class="text-muted m-0">Data event tidak ditemukan.</p>
+          <p class="text-muted m-0">Data penghargaan tidak ditemukan.</p>
         </div>
       </div>
 
@@ -244,8 +244,8 @@ const selectItem = (item) => {
 
           <!-- 🔹 EMPTY -->
           <div v-else class="h-100 d-flex flex-column align-items-center justify-content-center text-muted text-center p-4">
-            <h6>Pilih Event</h6>
-            <p class="small">Pilih salah satu event untuk melihat detail.</p>
+            <h6>Pilih Penghargaan</h6>
+            <p class="small">Pilih salah satu penghargaan untuk melihat detail.</p>
           </div>
 
         </div>

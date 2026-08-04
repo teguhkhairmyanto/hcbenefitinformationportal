@@ -87,7 +87,7 @@ const saveEmail = () => {
     </div>
 
     <div class="footer-menu">
-      <router-link to="/" class="footer-link">Event</router-link>
+      <router-link to="/" class="footer-link">Penghargaan</router-link>
       <router-link to="/" class="footer-link">Bantuan</router-link>
       <router-link to="/" class="footer-link">Tunjangan</router-link>
       <router-link to="/" class="footer-link">Benefit Lainnya</router-link>

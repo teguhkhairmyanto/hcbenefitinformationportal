@@ -64,7 +64,7 @@ const detailFields = [
 
 // Master kategori
 const categories = [
-  { category: 1, label: 'Event', value: 1 },
+  { category: 1, label: 'Penghargaan', value: 1 },
   { category: 2, label: 'Bantuan', value: 2 },
   { category: 3, label: 'Tunjangan', value: 3 },
   { category: 4, label: 'Benefit Lainnya', value: 4 }

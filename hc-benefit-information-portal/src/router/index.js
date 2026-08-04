@@ -5,7 +5,7 @@ import HomeView from '../views/HomeView.vue'
 import KalenderKerjaPerusahaan from '../views/KalenderKerjaPerusahaan.vue'
 import FormulirPengajuan from '../views/FormulirPengajuan.vue'
 import HelpDesk from '../views/HelpDesk.vue'
-import Event from '../views/Event.vue'
+import Penghargaan from '../views/Penghargaan.vue'
 import Bantuan from '../views/Bantuan.vue'
 import Tunjangan from '../views/Tunjangan.vue'
 import BenefitLainnya from '../views/BenefitLainnya.vue'
@@ -48,9 +48,9 @@ const routes = [
         props: true
       },
       {
-        path: 'event',
-        name: 'Event',
-        component: Event,
+        path: 'penghargaan',
+        name: 'Penghargaan',
+        component: Penghargaan,
         props: true
       },
       {

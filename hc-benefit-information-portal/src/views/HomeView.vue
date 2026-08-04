@@ -17,7 +17,7 @@ const isLoading = ref(false)
 // 🔹 CATEGORY DATA
 // =========================
 const categories = [
-  { title: 'Event', icon: 'cilUser', routeName: 'Event' },
+  { title: 'Penghargaan', icon: 'cilUser', routeName: 'Penghargaan' },
   { title: 'Bantuan', icon: 'cilMoney', routeName: 'Bantuan' },
   { title: 'Tunjangan', icon: 'cilWallet', routeName: 'Tunjangan' },
   { title: 'Benefit Lainnya', icon: 'cilHappy', routeName: 'BenefitLainnya' }

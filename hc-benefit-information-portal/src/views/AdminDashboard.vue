@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import AppIcon from '@/components/common/AppIcon.vue'
 
 const stats = ref([
-  { label: 'Event', count: 0, icon: 'cilUser', colorClass: 'bg-blue', categoryId: 1 },
+  { label: 'Penghargaan', count: 0, icon: 'cilUser', colorClass: 'bg-blue', categoryId: 1 },
   { label: 'Bantuan', count: 0, icon: 'cilMoney', colorClass: 'bg-red', categoryId: 2 },
   { label: 'Tunjangan', count: 0, icon: 'cilWallet', colorClass: 'bg-green', categoryId: 3 },
   { label: 'Lainnya', count: 0, icon: 'cilHappy', colorClass: 'bg-purple', categoryId: 4 }
