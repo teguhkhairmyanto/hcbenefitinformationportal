@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "74ilTIQhzRw=",
+  "dgSpecHash": "YC2nHAUniEk=",
   "success": true,
   "projectFilePath": "D:\\HC Work\\Project\\HC Benefit Portal\\Project Application\\hc-benefit-information-portal-backend\\hc-benefit-information-portal-api\\hc-benefit-information-portal-api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\khairmyanto.teguh\\.nuget\\packages\\dapper\\2.1.72\\dapper.2.1.72.nupkg.sha512",
     "C:\\Users\\khairmyanto.teguh\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\khairmyanto.teguh\\.nuget\\packages\\meilisearch\\0.18.0\\meilisearch.0.18.0.nupkg.sha512",
+    "C:\\Users\\khairmyanto.teguh\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\10.0.0\\microsoft.aspnetcore.authentication.jwtbearer.10.0.0.nupkg.sha512",
     "C:\\Users\\khairmyanto.teguh\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.3\\microsoft.aspnetcore.openapi.10.0.3.nupkg.sha512",
     "C:\\Users\\khairmyanto.teguh\\.nuget\\packages\\microsoft.bcl.cryptography\\9.0.13\\microsoft.bcl.cryptography.9.0.13.nupkg.sha512",
     "C:\\Users\\khairmyanto.teguh\\.nuget\\packages\\microsoft.build.framework\\18.0.2\\microsoft.build.framework.18.0.2.nupkg.sha512",
@@ -55,5 +56,18 @@
     "C:\\Users\\khairmyanto.teguh\\.nuget\\packages\\system.security.cryptography.pkcs\\9.0.13\\system.security.cryptography.pkcs.9.0.13.nupkg.sha512",
     "C:\\Users\\khairmyanto.teguh\\.nuget\\packages\\system.security.cryptography.protecteddata\\9.0.13\\system.security.cryptography.protecteddata.9.0.13.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc",
+      "projectPath": "D:\\HC Work\\Project\\HC Benefit Portal\\Project Application\\hc-benefit-information-portal-backend\\hc-benefit-information-portal-api\\hc-benefit-information-portal-api.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\HC Work\\Project\\HC Benefit Portal\\Project Application\\hc-benefit-information-portal-backend\\hc-benefit-information-portal-api\\hc-benefit-information-portal-api.csproj",
+      "libraryId": "Microsoft.OpenApi",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
 }

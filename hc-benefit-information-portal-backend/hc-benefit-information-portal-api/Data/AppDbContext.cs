@@ -15,6 +15,9 @@ namespace hc_benefit_information_portal_api.Data
         public DbSet<BenefitTag> BenefitTags { get; set; }
         public DbSet<Tags> Tags { get; set; }
         public DbSet<Faq> Faqs { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<LoginAttemptLog> LoginAttemptsLog { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

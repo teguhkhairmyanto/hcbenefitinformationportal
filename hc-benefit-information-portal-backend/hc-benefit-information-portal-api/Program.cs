@@ -4,8 +4,11 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Text;
 using Meilisearch;
 using hc_benefit_information_portal_api.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,15 +24,57 @@ builder.Services.AddSingleton(new MeilisearchClient("http://localhost:7700"));
 // =========================
 // CORS
 // =========================
+// PENTING: AllowCredentials() wajib ada supaya browser mengirim httpOnly cookie
+// lintas origin (frontend :5173, backend :5117). Tidak bisa dipakai bersama
+// AllowAnyOrigin() - makanya origin harus disebutkan eksplisit lewat WithOrigins.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowVue", policy =>
     {
         policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
+
+// =========================
+// JWT AUTHENTICATION (baca token dari httpOnly cookie "access_token",
+// bukan dari header Authorization)
+// =========================
+var jwtSecret = builder.Configuration["Jwt:Secret"]!;
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+var jwtAudience = builder.Configuration["Jwt:Audience"];
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
+        };
+
+        // Override lokasi token: ambil dari cookie, bukan header Authorization
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                if (context.Request.Cookies.ContainsKey("access_token"))
+                {
+                    context.Token = context.Request.Cookies["access_token"];
+                }
+                return Task.CompletedTask;
+            }
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 // =========================
 // REGISTER SERVICES
@@ -37,9 +82,15 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddScoped<BenefitFaqServices>();
 builder.Services.AddScoped<BenefitService>();
+builder.Services.AddScoped<AuthService>();
 
 var app = builder.Build();
 app.UseCors("AllowVue");
+
+// Urutan penting: Authentication sebelum Authorization, dan keduanya
+// sebelum MapControllers() di bagian bawah file ini
+app.UseAuthentication();
+app.UseAuthorization();
 
 // =========================
 // INIT MEILISEARCH

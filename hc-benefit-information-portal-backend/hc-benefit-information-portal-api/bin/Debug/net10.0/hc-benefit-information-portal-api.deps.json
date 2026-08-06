@@ -10,12 +10,14 @@
         "dependencies": {
           "Dapper": "2.1.72",
           "MeiliSearch": "0.18.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "10.0.0",
           "Microsoft.AspNetCore.OpenApi": "10.0.3",
           "Microsoft.Data.SqlClient": "7.0.0",
           "Microsoft.EntityFrameworkCore": "10.0.6",
           "Microsoft.EntityFrameworkCore.Design": "10.0.6",
           "Microsoft.EntityFrameworkCore.SqlServer": "10.0.6",
-          "System.Data.SqlClient": "4.9.1"
+          "System.Data.SqlClient": "4.9.1",
+          "System.IdentityModel.Tokens.Jwt": "8.16.0"
         },
         "runtime": {
           "hc-benefit-information-portal-api.dll": {}
@@ -45,6 +47,17 @@
           "lib/netstandard2.0/Meilisearch.dll": {
             "assemblyVersion": "0.18.0.0",
             "fileVersion": "0.18.0.0"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.Authentication.JwtBearer/10.0.0": {
+        "dependencies": {
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.16.0"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
           }
         }
       },
@@ -820,6 +833,13 @@
       "sha512": "sha512-gejqLq8TqeZsZuc50ofZD3MRsS/+a14vjrS9LRKqDfNKWYJWQaB+PXVOaRV/pzpXsl9FQO/vc5qqaqCMedlvCA==",
       "path": "meilisearch/0.18.0",
       "hashPath": "meilisearch.0.18.0.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Authentication.JwtBearer/10.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0BgDfT1GoZnzjJOBwx5vFMK5JtqsTEas9pCEwd1/KKxNUAqFmreN60WeUoF+CsmSd9tOQuqWedvdBo/QqHuNTQ==",
+      "path": "microsoft.aspnetcore.authentication.jwtbearer/10.0.0",
+      "hashPath": "microsoft.aspnetcore.authentication.jwtbearer.10.0.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.OpenApi/10.0.3": {
       "type": "package",
