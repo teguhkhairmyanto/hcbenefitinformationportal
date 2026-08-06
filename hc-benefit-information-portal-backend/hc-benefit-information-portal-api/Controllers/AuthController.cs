@@ -49,7 +49,7 @@ namespace hc_benefit_information_portal_api.Controllers
             Response.Cookies.Append("access_token", token, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true,           // WAJIB true di production (HTTPS). Di localhost tanpa HTTPS, lihat catatan di Program.cs
+                Secure = false,           // WAJIB true di production (HTTPS). Di localhost tanpa HTTPS, lihat catatan di Program.cs
                 SameSite = SameSiteMode.None, // None diperlukan krn frontend beda origin (5173) dari backend (5117)
                 Expires = DateTimeOffset.UtcNow.AddHours(8)
             });

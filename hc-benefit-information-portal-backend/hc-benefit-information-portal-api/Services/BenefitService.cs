@@ -321,8 +321,121 @@ namespace hc_benefit_information_portal_api.Services
         }
 
         // ==========================================================
-        // 🔹 TAMBAHKAN INI: METHOD UNTUK UPDATE DATA
+        // 🔹 BARU: Filter benefit sesuai entitlement role karyawan yang login
         // ==========================================================
+        public async Task<List<object>> GetBenefitsForRole(int? categoryId, int roleId)
+        {
+            string connStr = _config.GetConnectionString("DefaultConnection");
+            var benefitDict = new Dictionary<int, dynamic>();
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                await conn.OpenAsync();
+
+                string query = @"
+                    SELECT 
+                        b.id,
+                        b.title,
+                        b.description,
+                        b.category_id,
+                        b.limitbymatrix,
+
+                        d.id AS detail_id,
+                        s.id AS section_id,
+                        s.name AS section_title,
+                        d.content,
+
+                        t.name AS tag_name
+
+                    FROM benefits b
+                    LEFT JOIN benefit_details d 
+                        ON b.id = d.benefit_id
+                    LEFT JOIN section_titles s 
+                        ON d.section_title_id = s.id
+                    LEFT JOIN benefit_tags bt 
+                        ON b.id = bt.benefit_id
+                    LEFT JOIN tags t 
+                        ON bt.tag_id = t.id
+                    WHERE b.is_active = 1
+                    AND (@categoryId IS NULL OR b.category_id = @categoryId)
+                    AND EXISTS (
+                        SELECT 1 FROM benefit_roles br 
+                        WHERE br.benefit_id = b.id AND br.role_id = @roleId
+                    )
+                    ORDER BY b.id, s.id
+                ";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@categoryId", (object?)categoryId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@roleId", roleId);
+
+                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            int benefitId = (int)reader["id"];
+
+                            if (!benefitDict.ContainsKey(benefitId))
+                            {
+                                benefitDict[benefitId] = new
+                                {
+                                    id = benefitId,
+                                    title = reader["title"]?.ToString(),
+                                    description = reader["description"]?.ToString(),
+                                    category = reader["category_id"],
+                                    limitByMatrix = reader["limitbymatrix"],
+                                    sections = new List<dynamic>(),
+                                    tags = new List<string>()
+                                };
+                            }
+
+                            var benefit = benefitDict[benefitId];
+
+                            if (reader["tag_name"] != DBNull.Value)
+                            {
+                                var tags = (List<string>)benefit.tags;
+                                string tagName = reader["tag_name"].ToString();
+
+                                if (!tags.Contains(tagName))
+                                {
+                                    tags.Add(tagName);
+                                }
+                            }
+
+                            if (reader["section_id"] == DBNull.Value)
+                                continue;
+
+                            int sectionId = (int)reader["section_id"];
+                            string sectionTitle = reader["section_title"]?.ToString();
+                            var sections = (List<dynamic>)benefit.sections;
+                            var existingSection = sections.FirstOrDefault(s => s.sectionId == sectionId);
+
+                            if (existingSection == null)
+                            {
+                                existingSection = new
+                                {
+                                    sectionId = sectionId,
+                                    sectionTitle = sectionTitle,
+                                    details = new List<dynamic>()
+                                };
+                                sections.Add(existingSection);
+                            }
+
+                            if (reader["detail_id"] != DBNull.Value)
+                            {
+                                ((List<dynamic>)existingSection.details).Add(new
+                                {
+                                    content = reader["content"]?.ToString()
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+
+            return benefitDict.Values.ToList();
+        }
         // ==========================================================
 // 🔹 UPDATE: STRATEGI DELETE -> INSERT (REBORN)
 // ==========================================================
@@ -578,4 +691,3 @@ public async Task<bool> UpdateBenefitAsync(int id, BenefitCreateDto dto)
         }
     }
 }
-

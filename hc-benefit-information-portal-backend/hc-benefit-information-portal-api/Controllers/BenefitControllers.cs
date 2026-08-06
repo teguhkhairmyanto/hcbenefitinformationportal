@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using hc_benefit_information_portal_api.Services;
 using hc_benefit_information_portal_api.Models; // Tambahkan ini untuk mengenali DTO
 using System;
@@ -21,6 +22,25 @@ namespace hc_benefit_information_portal_api.Controllers
         public async Task<IActionResult> Get([FromQuery] int? categoryId)
         {
             var data = await _service.GetAllBenefits(categoryId);
+            return Ok(data);
+        }
+
+        // ==========================================
+        // 🔹 BARU: Benefit sesuai entitlement karyawan yang login
+        // ==========================================
+        [HttpGet("my-benefits")]
+        [Authorize]
+        public async Task<IActionResult> GetMyBenefits([FromQuery] int? categoryId)
+        {
+            var roleIdClaim = User.FindFirst("role_id")?.Value;
+
+            if (string.IsNullOrEmpty(roleIdClaim) || !int.TryParse(roleIdClaim, out int roleId))
+            {
+                // Karyawan belum punya role_id (masih NULL) -> tidak ada benefit yang entitled
+                return Ok(new System.Collections.Generic.List<object>());
+            }
+
+            var data = await _service.GetBenefitsForRole(categoryId, roleId);
             return Ok(data);
         }
         // ==========================================
