@@ -73,6 +73,7 @@ namespace hc_benefit_information_portal_api.Services
                 new Claim("employee_id", employee.Id.ToString()),
                 new Claim("nrp", employee.Nrp),
                 new Claim("nama", employee.Nama),
+                new Claim("email", employee.Email ?? ""),
                 new Claim("role_id", employee.RoleId?.ToString() ?? ""),
                 new Claim(ClaimTypes.Role, roleName ?? "")
             };

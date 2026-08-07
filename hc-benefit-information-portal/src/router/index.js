@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import MainLayout from '../layouts/MainLayout.vue'
 import HomeView from '../views/HomeView.vue'
+import LoginView from '../views/LoginView.vue'
 import KalenderKerjaPerusahaan from '../views/KalenderKerjaPerusahaan.vue'
 import FormulirPengajuan from '../views/FormulirPengajuan.vue'
 import HelpDesk from '../views/HelpDesk.vue'
@@ -17,6 +18,11 @@ import AdminChatLog from '@/views/AdminChatLog.vue'
 
 
 const routes = [
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginView
+  },
   {
     path: '/',
     component: MainLayout,
@@ -108,6 +114,21 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+// Route guard: redirect ke /login kalau belum ada sesi login karyawan.
+// Halaman /admin/* DIKECUALIKAN sementara -- login admin belum dibangun,
+// jadi jangan sampai admin ikut terkunci oleh guard ini.
+router.beforeEach((to, from, next) => {
+  const isEmployeeLoggedIn = !!sessionStorage.getItem('hc_user')
+  const isAdminRoute = to.path.startsWith('/admin')
+  const isLoginPage = to.name === 'Login'
+
+  if (!isEmployeeLoggedIn && !isAdminRoute && !isLoginPage) {
+    next({ name: 'Login' })
+  } else {
+    next()
+  }
 })
 
 export default router

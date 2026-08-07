@@ -56,7 +56,6 @@ watch(inputText, (newVal) => {
 const fetchAnswer = async (question) => {
   if (!question) return;
   
-  const currentUserEmail = sessionStorage.getItem('user_email');
   suggestions.value = [] // Tutup suggestion saat mulai bertanya
   isLoading.value = true;
   chatHistory.value.push({ role: 'user', sender: 'Anda', text: question });
@@ -81,7 +80,7 @@ const fetchAnswer = async (question) => {
     }
 
     chatHistory.value.push({ role: 'bot', sender: 'HC Portal', text: answer });
-    saveChatToLog(currentUserEmail, question, answer, status);
+    saveChatToLog(question, answer, status);
 
   } catch (err) {
     chatHistory.value.push({ role: 'bot', sender: 'HC Portal', text: 'Koneksi terputus.' });
@@ -98,13 +97,13 @@ const selectSuggestion = (item) => {
   fetchAnswer(item.title)
 }
 
-const saveChatToLog = async (email, question, answer, status) => {
+const saveChatToLog = async (question, answer, status) => {
   try {
     await fetch('http://localhost:5117/api/chat-log', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({
-        email: email,
         question: question,
         answerPreview: answer,
         status: status
@@ -198,4 +197,3 @@ const sendMessage = () => {
     </div>
   </div>
 </template>
-

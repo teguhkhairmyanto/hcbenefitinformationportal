@@ -2,37 +2,12 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import AppIcon from '@/components/common/AppIcon.vue'
-import { ref, onMounted } from 'vue'
 
 const route = useRoute()
-const userEmail = ref('')
-const showEmailModal = ref(false)
 
 const isHome = computed(() => {
   return route.name === 'Home'
 })
-
-onMounted(() => {
-  const savedEmail = sessionStorage.getItem('user_email')
-  if (!savedEmail) {
-    showEmailModal.value = true
-  } else {
-    // Jika sudah ada, pastikan modal tertutup
-    showEmailModal.value = false
-    userEmail.value = savedEmail
-  }
-})
-
-const saveEmail = () => {
-  if (userEmail.value && userEmail.value.includes('@')) {
-    sessionStorage.setItem('user_email', userEmail.value)
-    showEmailModal.value = false
-  } else {
-    alert('Mohon masukkan email yang valid')
-  }
-}
-
-
 </script>
 
 <template>
@@ -99,28 +74,5 @@ const saveEmail = () => {
     © 2026 HC Portal
   </div>
 </footer>
-<div v-if="showEmailModal" class="email-overlay">
-    <div class="email-modal-card shadow-lg">
-      <div class="modal-body p-4 text-center">
-        <div class="mb-3">
-          <AppIcon name="cilUser" style="width: 48px; height: 48px; color: #0056b3;" />
-        </div>
-        <h5 class="fw-bold">Verifikasi Email</h5>
-        <p class="text-muted small">Silakan masukkan email perusahaan Anda untuk mengakses informasi benefit.</p>
-        
-        <input 
-          v-model="userEmail" 
-          type="email" 
-          class="form-control mb-3 text-center" 
-          placeholder="nama@perusahaan.com"
-          @keyup.enter="saveEmail"
-        >
-        
-        <button class="btn btn-primary w-100 fw-bold" @click="saveEmail">
-          Lanjutkan
-        </button>
-      </div>
-    </div>
-  </div>
 
 </template>

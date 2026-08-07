@@ -33,6 +33,8 @@ namespace hc_benefit_information_portal_api.Models
         [Column("role_source")]
         public string RoleSource { get; set; } = "rule";
 
+        public string? Email { get; set; }
+
         [Column("is_active")]
         public bool IsActive { get; set; }
 

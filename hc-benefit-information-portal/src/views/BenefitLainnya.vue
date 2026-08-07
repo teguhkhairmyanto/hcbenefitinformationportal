@@ -51,7 +51,9 @@ const navigation = [
 ========================= */
 const fetchData = async (categoryId) => {
   try {
-    const res = await fetch(`http://localhost:5117/api/benefits?categoryId=${categoryId}`)
+    const res = await fetch(`http://localhost:5117/api/benefits/my-benefits?categoryId=${categoryId}`, {
+      credentials: 'include'
+    })
     const data = await res.json()
     benefitList.value = data
     selectedItem.value = null

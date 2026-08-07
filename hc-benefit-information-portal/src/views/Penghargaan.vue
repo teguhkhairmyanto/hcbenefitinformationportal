@@ -52,7 +52,9 @@ const fetchData = async (categoryId) => {
   try {
     console.log("FETCH CATEGORY:", categoryId)
 
-    const res = await fetch(`http://localhost:5117/api/benefits?categoryId=${categoryId}`)
+    const res = await fetch(`http://localhost:5117/api/benefits/my-benefits?categoryId=${categoryId}`, {
+      credentials: 'include'
+    })
     const data = await res.json()
 
     eventList.value = data

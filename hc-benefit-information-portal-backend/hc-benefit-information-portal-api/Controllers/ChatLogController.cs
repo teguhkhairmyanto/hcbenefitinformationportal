@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Data.SqlClient;
 using Dapper; // Pastikan sudah install package Dapper lewat NuGet
 using YourProject.Models;
@@ -15,21 +16,27 @@ public class ChatLogController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> SaveLog([FromBody] ChatLogRequest req)
     {
+        // Identitas diambil dari sesi login (klaim JWT), BUKAN dari input frontend
+        var nrp = User.FindFirst("nrp")?.Value;
+        var email = User.FindFirst("email")?.Value;
+
         var connectionString = _config.GetConnectionString("DefaultConnection");
 
         using (var conn = new SqlConnection(connectionString))
         {
             // Query untuk simpan data ke tabel chat_log yang Anda buat tadi
             var query = @"
-                INSERT INTO chat_log (email, question, answer_preview, status, is_emailed, created_at) 
-                VALUES (@Email, @Question, @AnswerPreview, @Status, 0, GETDATE())";
+                INSERT INTO chat_log (nrp, email, question, answer_preview, status, is_emailed, created_at) 
+                VALUES (@Nrp, @Email, @Question, @AnswerPreview, @Status, 0, GETDATE())";
 
             try 
             {
                 await conn.ExecuteAsync(query, new { 
-                    req.Email, 
+                    Nrp = nrp,
+                    Email = email, 
                     req.Question, 
                     req.AnswerPreview, 
                     req.Status 
@@ -53,7 +60,7 @@ public class ChatLogController : ControllerBase
         {
             // Kita ambil pertanyaan yang statusnya unanswered dan belum pernah dikirim email
             var query = @"
-                SELECT id, email, question, answer_preview as AnswerPreview, status, FORMAT(created_at, 'dd-MM-yy HH:mm') as CreatedAt
+                SELECT id, nrp, email, question, answer_preview as AnswerPreview, status, FORMAT(created_at, 'dd-MM-yy HH:mm') as CreatedAt
                 FROM chat_log 
                 WHERE status = 'unanswered' AND is_emailed = 0 
                 ORDER BY created_at DESC";
