@@ -436,6 +436,53 @@ namespace hc_benefit_information_portal_api.Services
 
             return benefitDict.Values.ToList();
         }
+
+        // ==========================================================
+        // 🔹 BARU: Ambil hasil precompute nominal (employee_benefit_amounts)
+        // untuk karyawan yang sedang login
+        // ==========================================================
+        public async Task<List<object>> GetMyAmounts(int employeeId)
+        {
+            string connStr = _config.GetConnectionString("DefaultConnection");
+            var result = new List<object>();
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                await conn.OpenAsync();
+
+                string query = @"
+                    SELECT 
+                        eba.benefit_id,
+                        b.title,
+                        eba.resolved_amount,
+                        eba.computed_at
+                    FROM employee_benefit_amounts eba
+                    JOIN benefits b ON b.id = eba.benefit_id
+                    WHERE eba.employee_id = @employeeId
+                ";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@employeeId", employeeId);
+
+                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            result.Add(new
+                            {
+                                benefitId = reader["benefit_id"],
+                                title = reader["title"]?.ToString(),
+                                resolvedAmount = reader["resolved_amount"]?.ToString(),
+                                computedAt = reader["computed_at"]
+                            });
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
         // ==========================================================
 // 🔹 UPDATE: STRATEGI DELETE -> INSERT (REBORN)
 // ==========================================================

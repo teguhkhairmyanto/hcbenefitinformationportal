@@ -43,6 +43,24 @@ namespace hc_benefit_information_portal_api.Controllers
             var data = await _service.GetBenefitsForRole(categoryId, roleId);
             return Ok(data);
         }
+
+        // ==========================================
+        // 🔹 BARU: Nominal hasil precompute untuk karyawan yang login
+        // ==========================================
+        [HttpGet("my-amounts")]
+        [Authorize]
+        public async Task<IActionResult> GetMyAmounts()
+        {
+            var employeeIdClaim = User.FindFirst("employee_id")?.Value;
+
+            if (string.IsNullOrEmpty(employeeIdClaim) || !int.TryParse(employeeIdClaim, out int employeeId))
+            {
+                return Ok(new System.Collections.Generic.List<object>());
+            }
+
+            var data = await _service.GetMyAmounts(employeeId);
+            return Ok(data);
+        }
         // ==========================================
         // TAMBAHKAN INI: Endpoint untuk Dashboard
         // ==========================================

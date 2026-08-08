@@ -12,6 +12,47 @@ const search = ref('')
 const selectedItem = ref(null)
 const tunjanganList = ref([])
 const searchResults = ref([])
+const myAmounts = ref({}) // { benefitId: resolvedAmount }
+
+/* =========================
+   🔹 FORMAT NOMINAL
+   - Kalau bisa di-parse angka -> format ribuan (Rp)
+   - Kalau tidak (teks bebas seperti "1 kali gaji") -> tampilkan apa adanya
+========================= */
+const formatAmount = (val) => {
+  if (val === null || val === undefined || val === '') return null
+  const trimmed = val.toString().trim()
+  const num = Number(trimmed)
+  if (trimmed !== '' && !isNaN(num)) {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0
+    }).format(num)
+  }
+  return trimmed
+}
+
+const fetchMyAmounts = async () => {
+  try {
+    const res = await fetch('http://localhost:5117/api/benefits/my-amounts', {
+      credentials: 'include'
+    })
+    const data = await res.json()
+    const map = {}
+    data.forEach(item => { map[item.benefitId] = item.resolvedAmount })
+    myAmounts.value = map
+  } catch (err) {
+    console.error('Gagal fetch nominal:', err)
+  }
+}
+fetchMyAmounts()
+
+const selectedAmount = computed(() => {
+  if (!selectedItem.value) return null
+  const raw = myAmounts.value[selectedItem.value.id]
+  return formatAmount(raw)
+})
 
 // =========================
 // CLEAN SELECTED ITEM
@@ -227,7 +268,13 @@ const selectItem = (item) => {
             <span class="text-muted small">
               Kategori: {{ getCategoryName(selectedItem.category) }}
             </span>
-            
+
+            <!-- 🔹 NOMINAL BENEFIT (hasil precompute sesuai atribut karyawan) -->
+            <div v-if="selectedAmount" class="mt-3 p-3 rounded" style="background:#f0f4fa;">
+              <span class="text-muted small d-block">Nominal</span>
+              <span class="fw-bold fs-5 text-primary-dark">{{ selectedAmount }}</span>
+            </div>
+
             <p class="text-secondary mt-4">
               {{ selectedItem.description || '-' }}
             </p>

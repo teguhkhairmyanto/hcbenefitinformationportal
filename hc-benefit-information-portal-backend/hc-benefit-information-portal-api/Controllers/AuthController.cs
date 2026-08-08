@@ -50,7 +50,7 @@ namespace hc_benefit_information_portal_api.Controllers
             {
                 HttpOnly = true,
                 Secure = false,           // WAJIB true di production (HTTPS). Di localhost tanpa HTTPS, lihat catatan di Program.cs
-                SameSite = SameSiteMode.None, // None diperlukan krn frontend beda origin (5173) dari backend (5117)
+                SameSite = SameSiteMode.Lax, // None diperlukan krn frontend beda origin (5173) dari backend (5117)
                 Expires = DateTimeOffset.UtcNow.AddHours(8)
             });
 
